@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Usuario {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  nombre   String?
+  password String
+  rol      String   @default("usuario")
+  creadoEn DateTime @default(now())
+}
+
+model Producto {
+  id               Int     @id @default(autoincrement())
+  nombre           String
+  slug             String  @unique
+  tipo             String  @default("Sahumerio artesanal")
+  mezcla           String
+  descripcionCorta String
+  descripcionLarga String
+  precio           Int
+  imagenUrl        String?
+  activo           Boolean @default(true)
+  destacado        Boolean @default(false)
+  orden            Int     @default(0)
+
+  beneficiosDestacados    Json
+  propiedadesCombinacion  Json
+  recomendacionesRituales Json
+
+  viajeSonoroTitulo String?
+  viajeSonoroSlug   String?
+  viajeSonoroTexto  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ViajeSonoro {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  slug        String   @unique
+  descripcion String?
+  audioUrl    String
+  imagenUrl   String?
+  duracion    String?
+  publicado   Boolean  @default(true)
+  destacado   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoria   String?
+}
