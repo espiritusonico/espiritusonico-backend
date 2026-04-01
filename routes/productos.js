@@ -1,14 +1,13 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../lib/prisma.js";
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   try {
     const productos = await prisma.producto.findMany({
       where: { activo: true },
-      orderBy: { orden: "asc" }
+      orderBy: { orden: "asc" },
     });
 
     res.json(productos);
@@ -23,7 +22,7 @@ router.get("/:slug", async (req, res) => {
     const { slug } = req.params;
 
     const producto = await prisma.producto.findUnique({
-      where: { slug }
+      where: { slug },
     });
 
     if (!producto || !producto.activo) {
